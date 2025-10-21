@@ -1,0 +1,37 @@
+# build outputs
+bin/
+obj/
+
+# visual studio
+.vs/
+
+# jetbrains rider
+.idea/
+*.sln.iml
+
+# user settings
+*.user
+*.userosscache
+*.suo
+*.rsuser
+*.csproj.user
+*.csproj.userprefs
+
+# tooling caches
+_ReSharper.Caches/
+*.DotSettings.user
+
+# packaging artifacts
+*.nupkg
+*.snupkg
+
+# test + coverage artifacts
+TestResults/
+coverage/
+
+# logs and misc
+*.log
+*.tlog
+
+# macos filesystem
+.DS_Store
