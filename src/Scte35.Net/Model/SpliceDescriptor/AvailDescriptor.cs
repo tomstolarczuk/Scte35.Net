@@ -22,7 +22,7 @@ public sealed class AvailDescriptor : ISpliceDescriptor
 		w.WriteUInt32(ProviderAvailId);
 
 		if (w.BitsWritten != PayloadBytes * 8)
-			throw new InvalidOperationException($"{nameof(AvailDescriptor)}.{nameof(Encode)}: payload size mismatch.");
+			throw new InvalidOperationException("Payload size mismatch.");
 	}
 
 	public void Decode(ReadOnlySpan<byte> data)
@@ -34,6 +34,6 @@ public sealed class AvailDescriptor : ISpliceDescriptor
 		ProviderAvailId = r.ReadUInt32();
 
 		if (r.BitsRemaining != 0)
-			throw new InvalidOperationException($"{nameof(AvailDescriptor)}.{nameof(Decode)}: trailing data present.");
+			throw new InvalidOperationException("Trailing data present.");
 	}
 }
