@@ -5,6 +5,10 @@ public static class Scte35Constants
     // Table ID
     public const byte TableId = 0xFC;
 
+    // Cue identifier
+    public const uint CueIdentifier = 0x43554549;
+    public const string CueIdentifierAscii = "CUEI";
+
     // Splice Command Types
     public const byte SpliceNullCommand = 0x00;
     public const byte SpliceScheduleCommand = 0x04;
@@ -22,10 +26,10 @@ public static class Scte35Constants
     public const byte PrivateDescriptorTag = 0xFF;
 
     // SAP (Splice Point) Types
-    public const byte SapTypeNotSpecified = 0;
-    public const byte SapTypeStartsWithVideo = 1;
-    public const byte SapTypeStartsWithAudio = 2;
-    public const byte SapTypeStartsWithOther = 3;
+    public const byte SapTypeNotSpecified = 0x0;
+    public const byte SapTypeStartsWithVideo = 0x1;
+    public const byte SapTypeStartsWithAudio = 0x2;
+    public const byte SapTypeStartsWithOther = 0x3;
 
     // PTS and timing
     public const ulong PtsMax = 0x1FFFFFFFFUL; // 33-bit PTS rollover
