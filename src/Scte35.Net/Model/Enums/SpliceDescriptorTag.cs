@@ -9,5 +9,7 @@ public enum SpliceDescriptorTag : byte
 	Segmentation = Scte35Constants.SegmentationDescriptorTag,
 	Time = Scte35Constants.TimeDescriptorTag,
 	Audio = Scte35Constants.AudioDescriptorTag,
-	Private = Scte35Constants.PrivateDescriptorTag,
+
+	// category sentinel, not wired value.
+	Private  = 0xFF,
 }
