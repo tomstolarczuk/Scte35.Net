@@ -2,6 +2,8 @@ namespace Scte35.Net.Constants;
 
 public static class Scte35Constants
 {
+    public const uint Reserved = 0xFFFF;
+
     // Table ID
     public const byte TableId = 0xFC;
 
@@ -26,10 +28,10 @@ public static class Scte35Constants
     public const byte PrivateDescriptorTag = 0xFF;
 
     // SAP (Splice Point) Types
-    public const byte SapTypeNotSpecified = 0x0;
-    public const byte SapTypeStartsWithVideo = 0x1;
-    public const byte SapTypeStartsWithAudio = 0x2;
-    public const byte SapTypeStartsWithOther = 0x3;
+    public const byte SapTypeClosedGopNoLeadingPictures = 0x0;
+    public const byte SapTypeClosedGopLeadingPictures = 0x2;
+    public const byte SapTypeOpenGop = 0x3;
+    public const byte SapTypeNotSpecified = 0x3;
 
     // PTS and timing
     public const ulong PtsMax = 0x1FFFFFFFFUL; // 33-bit PTS rollover
@@ -63,9 +65,29 @@ public static class Scte35Constants
     public const byte SegmentationTypeNetworkStart = 0x50;
     public const byte SegmentationTypeNetworkEnd = 0x51;
 
+    // Segmentation UPID Types
+    public const byte SegmentationUPIDTypeNotUsed = 0x00;
+    public const byte SegmentationUPIDTypeUserDefined = 0x01;
+    public const byte SegmentationUPIDTypeISCI = 0x02;
+    public const byte SegmentationUPIDTypeAdID = 0x03;
+    public const byte SegmentationUPIDTypeUMID = 0x04;
+    public const byte SegmentationUPIDTypeISANDeprecated = 0x05;
+    public const byte SegmentationUPIDTypeISAN = 0x06;
+    public const byte SegmentationUPIDTypeTribuneIdentifier = 0x07; // TID
+    public const byte SegmentationUPIDTypeTurnerIdentifier = 0x08; // TI
+    public const byte SegmentationUPIDTypeAdvertisingDigitalIdentifier = 0x09; // ADI
+    public const byte SegmentationUPIDTypeEntertainmentIdentifierRegistry = 0x0A; // EIDR
+    public const byte SegmentationUPIDTypeATSCContentIdentifier = 0x0B; // ATSC
+    public const byte SegmentationUPIDTypeManagedPrivateUPID = 0x0C; // MPU
+    public const byte SegmentationUPIDTypeMultipleUPID = 0x0D; // MID
+    public const byte SegmentationUPIDTypeADSInformation = 0x0E; // ADS
+    public const byte SegmentationUPIDTypeUniformResourceIdentifier = 0x0F; // URI
+    public const byte SegmentationUPIDTypeUniversalUniqueIdentifier = 0x10; // UUID
+    public const byte SegmentationUPIDTypeServiceContentReferenceIdentifier = 0x11; // SCR
+
     // Misc
-    public const byte DeviceRestrictionsNone = 0x0;
-    public const byte DeviceRestrictionsRestrictGroup0 = 0x1;
-    public const byte DeviceRestrictionsRestrictGroup1 = 0x2;
-    public const byte DeviceRestrictionsRestrictGroup2 = 0x3;
+    public const byte DeviceRestrictionsGroup0 = 0x0;
+    public const byte DeviceRestrictionsGroup1 = 0x1;
+    public const byte DeviceRestrictionsGroup2 = 0x2;
+    public const byte DeviceRestrictionsNone = 0x3;
 }
