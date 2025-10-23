@@ -16,7 +16,7 @@ public sealed class SegmentationDescriptor : ISpliceDescriptor
     public bool DeliveryNotRestrictedFlag { get; set; }
     public DeliveryRestrictions? DeliveryRestrictions { get; set; }
     public IList<SegmentationDescriptorComponent> Components { get; } = new List<SegmentationDescriptorComponent>();
-    public ulong? SegmentationDuration90K { get; set; }
+    public SegmentationDuration? SegmentationDuration { get; set; }
     public byte[] SegmentationUpidBytes { get; set; } = [];
     public SegmentationUPIDType SegmentationUpidType { get; set; }
     public SegmentationUpid? Upid { get; set; }
@@ -130,7 +130,7 @@ public sealed class SegmentationDescriptor : ISpliceDescriptor
 
         if (SegmentationDurationFlag)
         {
-            ulong dur = (SegmentationDuration90K ?? 0UL) & 0xFFFFFFFFFFUL; // 40 bits
+            ulong dur = (SegmentationDuration?.Ticks90K ?? 0UL) & 0xFFFFFFFFFFUL; // 40 bits
             w.WriteBits64(dur, 40);
         }
 
@@ -219,7 +219,8 @@ public sealed class SegmentationDescriptor : ISpliceDescriptor
 
         if (SegmentationDurationFlag)
         {
-            SegmentationDuration90K = r.ReadBits64(40);
+            ulong dur = r.ReadBits64(40);
+            SegmentationDuration = new SegmentationDuration(dur);
         }
 
         SegmentationUpidType = (SegmentationUPIDType)r.ReadByte();

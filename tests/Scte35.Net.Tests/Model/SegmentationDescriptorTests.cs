@@ -34,7 +34,7 @@ namespace Scte35.Net.Tests.Model
                 ProgramSegmentationFlag = true,
                 SegmentationDurationFlag = true,
                 DeliveryNotRestrictedFlag = true,
-                SegmentationDuration90K = 1234567890UL,
+                SegmentationDuration = new SegmentationDuration(1234567890UL),
                 SegmentationUpidType = SegmentationUPIDType.NotUsed,
                 SegmentationUpidBytes = [],
                 SegmentationTypeId = SegmentationType.ProgramStart,
@@ -50,7 +50,7 @@ namespace Scte35.Net.Tests.Model
             Assert.True(rt.ProgramSegmentationFlag);
             Assert.True(rt.SegmentationDurationFlag);
             Assert.True(rt.DeliveryNotRestrictedFlag);
-            Assert.Equal(d.SegmentationDuration90K, rt.SegmentationDuration90K);
+            Assert.Equal(d.SegmentationDuration?.Ticks90K, rt.SegmentationDuration?.Ticks90K);
             Assert.Equal(d.SegmentationUpidType, rt.SegmentationUpidType);
             Assert.Equal(d.SegmentationUpidBytes, rt.SegmentationUpidBytes);
             Assert.Equal(d.SegmentationTypeId, rt.SegmentationTypeId);
@@ -247,7 +247,7 @@ namespace Scte35.Net.Tests.Model
                 SegmentationEventIdComplianceIndicator = true,
                 ProgramSegmentationFlag = true,
                 SegmentationDurationFlag = true,
-                SegmentationDuration90K = 0x123456789AUL & Scte35Constants.SegmentationDurationMax,
+                SegmentationDuration = new SegmentationDuration(0x123456789AUL & Scte35Constants.SegmentationDurationMax),
                 DeliveryNotRestrictedFlag = false,
                 DeliveryRestrictions = new DeliveryRestrictions
                 {
