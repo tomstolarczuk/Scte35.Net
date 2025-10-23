@@ -8,11 +8,9 @@ public sealed class AudioDescriptor : ISpliceDescriptor
 {
 	private const int HeaderBits = 32 + 4 + 4;
 	private const int ChannelBits = 8 + 24 + 3 + 4 + 1;
-
+	
 	public SpliceDescriptorTag Tag => SpliceDescriptorTag.Audio;
-
 	public IList<AudioChannel> AudioChannels { get; } = new List<AudioChannel>();
-
 	public int PayloadBytes => (HeaderBits + AudioChannels.Count * ChannelBits) / 8;
 
 	public void Decode(ReadOnlySpan<byte> data)

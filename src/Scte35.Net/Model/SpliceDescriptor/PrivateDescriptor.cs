@@ -6,13 +6,9 @@ namespace Scte35.Net.Model.SpliceDescriptor;
 public sealed class PrivateDescriptor : ISpliceDescriptor
 {
 	public SpliceDescriptorTag Tag => SpliceDescriptorTag.Private;
-
 	public uint Identifier { get; set; }
-
 	public byte PrivateTag { get; set; }
-
 	public byte[] PrivateBytes { get; set; } = [];
-
 	public int PayloadBytes => 4 + PrivateBytes.Length;
 
 	public PrivateDescriptor(byte privateTag)

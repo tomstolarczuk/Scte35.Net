@@ -8,11 +8,8 @@ namespace Scte35.Net.Model.SpliceDescriptor;
 public sealed class DtmfDescriptor : ISpliceDescriptor
 {
 	public SpliceDescriptorTag Tag => SpliceDescriptorTag.Dtmf;
-
 	public byte Preroll { get; set; }
-
 	public string Chars { get; set; } = string.Empty;
-
 	public int PayloadBytes => 4 + 1 + 1 + Chars.Length;
 
 	public void Decode(ReadOnlySpan<byte> data)

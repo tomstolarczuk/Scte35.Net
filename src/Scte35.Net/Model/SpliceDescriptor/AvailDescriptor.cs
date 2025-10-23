@@ -7,9 +7,7 @@ namespace Scte35.Net.Model.SpliceDescriptor;
 public sealed class AvailDescriptor : ISpliceDescriptor
 {
 	public uint ProviderAvailId { get; set; }
-
 	public int PayloadBytes => 8;
-
 	public SpliceDescriptorTag Tag => SpliceDescriptorTag.Avail;
 
 
