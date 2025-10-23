@@ -160,7 +160,7 @@ namespace Scte35.Net.Tests.Model
 
 			// Byte 4 holds the 4-bit count and 4-bit reserved. We expect reserved to be 0xF.
 			// In typical MSB-first packing, the low nibble is reserved here.
-			Assert.Equal(0x0F, buf[4] & 0x0F);
+			Assert.Equal(0xF, buf[4] & 0xF);
 		}
 	}
 }

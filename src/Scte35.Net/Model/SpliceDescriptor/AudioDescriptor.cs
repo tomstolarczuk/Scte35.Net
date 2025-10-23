@@ -25,7 +25,7 @@ public sealed class AudioDescriptor : ISpliceDescriptor
 
 		int audioCount = (int)r.ReadBits(4);
 		if (audioCount > 0xF)
-			throw new InvalidOperationException("Invalid audio_count {audioCount} (> 15)");
+			throw new InvalidOperationException($"Invalid audio_count {audioCount} (> 15)");
 
 		if (r.ReadBits(4) != 0xF)
 			throw new InvalidOperationException("Reserved bits not set to 1.");
@@ -67,7 +67,7 @@ public sealed class AudioDescriptor : ISpliceDescriptor
 		var w = new BitWriter(dest);
 		w.WriteUInt32(Scte35Constants.CueIdentifier);
 		w.WriteBits((uint)AudioChannels.Count, 4);
-		w.WriteBits(0xF, 4); // reserved bits set to 1 per spec
+		w.WriteBits(Scte35Constants.Reserved, 4); // reserved bits set to 1 per spec
 
 		foreach (var ch in AudioChannels)
 		{
