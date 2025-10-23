@@ -4,8 +4,8 @@ namespace Scte35.Net.Model.Enums;
 
 public enum SapType : byte
 {
-	Type1 = Scte35Constants.SapTypeStartsWithOther,
-	Type2 = Scte35Constants.SapTypeStartsWithVideo,
-	Type3 = Scte35Constants.SapTypeStartsWithAudio,
+	ClosedGopNoLeadingPictures = Scte35Constants.SapTypeClosedGopNoLeadingPictures,
+	ClosedGopLeadingPictures = Scte35Constants.SapTypeClosedGopLeadingPictures,
+	OpenGop = Scte35Constants.SapTypeOpenGop,
 	NotSpecified = Scte35Constants.SapTypeNotSpecified,
 }
