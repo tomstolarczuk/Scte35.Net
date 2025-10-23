@@ -25,7 +25,6 @@ public static class Scte35Constants
     public const byte SegmentationDescriptorTag = 0x02;
     public const byte TimeDescriptorTag = 0x03;
     public const byte AudioDescriptorTag = 0x04;
-    public const byte PrivateDescriptorTag = 0xFF;
 
     // SAP (Splice Point) Types
     public const byte SapTypeClosedGopNoLeadingPictures = 0x0;
@@ -35,6 +34,7 @@ public static class Scte35Constants
 
     // PTS and timing
     public const ulong PtsMax = 0x1FFFFFFFFUL; // 33-bit PTS rollover
+    public const ulong SegmentationDurationMax = 0xFFFFFFFFFFUL; // 40-bit mask
     public const double TicksPerSecond = 90000.0;
 
     // Segmentation Types
