@@ -110,8 +110,7 @@ namespace Scte35.Net.Tests.Model
             Buffer.BlockCopy(bytes, 0, withExtra, 0, bytes.Length);
 
             var victim = new TimeDescriptor();
-            var ex = Assert.Throws<InvalidOperationException>(() => victim.Decode(withExtra));
-            Assert.Contains("Trailing bits", ex.Message);
+            Assert.Throws<InvalidOperationException>(() => victim.Decode(withExtra));
         }
     }
 }

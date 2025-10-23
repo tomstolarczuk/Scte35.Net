@@ -15,7 +15,7 @@ namespace Scte35.Net.Model.SpliceDescriptor
 
 		public void Decode(ReadOnlySpan<byte> data)
 		{
-			PayloadValidator.RequireMinLength(data, PayloadBytes);
+			PayloadValidator.RequireExactLength(data, PayloadBytes);
 
 			var r = new BitReader(data);
 
@@ -32,7 +32,7 @@ namespace Scte35.Net.Model.SpliceDescriptor
 		public void Encode(Span<byte> dest)
 		{
 			int needed = PayloadBytes;
-			PayloadValidator.RequireMinLength(dest, needed);
+			PayloadValidator.RequireExactLength(dest, needed);
 
 			var w = new BitWriter(dest);
 
