@@ -1,0 +1,7 @@
+This project includes portions derived from the scte35-go project
+(https://github.com/Comcast/scte35-go)
+Copyright © Comcast Cable Communications Management, LLC.
+Licensed under the Apache License, Version 2.0.
+
+Modifications and C# implementation:
+Copyright © 2025 Tom Stolarczuk.
