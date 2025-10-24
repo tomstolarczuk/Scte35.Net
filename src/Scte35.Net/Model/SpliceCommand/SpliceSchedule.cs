@@ -8,6 +8,7 @@ namespace Scte35.Net.Model.SpliceCommand
     {
         public SpliceCommandType Type => SpliceCommandType.SpliceSchedule;
         public IList<Event> Events { get; } = new List<Event>();
+
         public int PayloadBytes
         {
             get
@@ -40,7 +41,7 @@ namespace Scte35.Net.Model.SpliceCommand
             var r = new BitReader(data);
 
             int count = r.ReadByte();
-            
+
             Events.Clear();
             for (int i = 0; i < count; i++)
             {
@@ -168,9 +169,9 @@ namespace Scte35.Net.Model.SpliceCommand
                 else
                 {
                     int componentCount = r.ReadByte();
-                    
+
                     PayloadValidator.RequireRange(componentCount, 1, 0xFF);
-                    
+
                     Components.Clear();
                     for (int j = 0; j < componentCount; j++)
                     {
@@ -196,25 +197,13 @@ namespace Scte35.Net.Model.SpliceCommand
         public sealed class Component
         {
             public byte ComponentTag { get; set; }
-
-            public uint
-                UtcSpliceTime
-            {
-                get;
-                set;
-            }
+            public uint UtcSpliceTime { get; set; }
         }
 
         public sealed class BreakDuration
         {
             public bool AutoReturn { get; set; }
-
-            public ulong
-                Duration90K
-            {
-                get;
-                set;
-            }
+            public ulong Duration90K { get; set; }
 
             internal void Encode(ref BitWriter w)
             {
