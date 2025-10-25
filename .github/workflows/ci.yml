@@ -50,7 +50,6 @@ jobs:
 
       - name: run versionize.sh
         env:
-          PATH: ${{ env.PATH }}:/root/.dotnet/tools
           GIT_AUTHOR_NAME: github-actions[bot]
           GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: github-actions[bot]
