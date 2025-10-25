@@ -19,7 +19,7 @@ env:
 jobs:
   version:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:8.0-jammy
+    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     outputs:
       version: ${{ steps.export.outputs.version }}
       did_release: ${{ steps.export.outputs.did_release }}
@@ -31,7 +31,7 @@ jobs:
       - name: cache nuget
         uses: actions/cache@v4
         with:
-          path: /root/.nuget/packages
+          path: ~/.nuget/packages
           key: nuget-${{ runner.os }}-8.0-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props', 'global.json', 'NuGet.config') }}
           restore-keys: |
             nuget-${{ runner.os }}-8.0-
@@ -70,7 +70,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:8.0-jammy
+    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     needs: [ version ]
     steps:
       - uses: actions/checkout@v4
@@ -78,7 +78,7 @@ jobs:
       - name: cache nuget
         uses: actions/cache@v4
         with:
-          path: /root/.nuget/packages
+          path: ~/.nuget/packages
           key: nuget-${{ runner.os }}-8.0-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props', 'global.json', 'NuGet.config') }}
           restore-keys: |
             nuget-${{ runner.os }}-8.0-
@@ -97,7 +97,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:8.0-jammy
+    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     needs: [ build ]
     steps:
       - uses: actions/checkout@v4
@@ -120,7 +120,7 @@ jobs:
 
   pack:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:8.0-jammy
+    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     needs: [ version, test ]
     steps:
       - uses: actions/checkout@v4
@@ -128,7 +128,7 @@ jobs:
       - name: cache nuget
         uses: actions/cache@v4
         with:
-          path: /root/.nuget/packages
+          path: ~/.nuget/packages
           key: nuget-${{ runner.os }}-8.0-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props', 'global.json', 'NuGet.config') }}
           restore-keys: |
             nuget-${{ runner.os }}-8.0-
@@ -150,7 +150,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:8.0-jammy
+    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     needs: [ version, pack ]
     if: needs.version.outputs.did_release == 'true'
     env:
