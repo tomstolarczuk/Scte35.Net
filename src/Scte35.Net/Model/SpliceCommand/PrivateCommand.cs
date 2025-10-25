@@ -3,7 +3,7 @@ using Scte35.Net.Model.Enums;
 
 namespace Scte35.Net.Model.SpliceCommand;
 
-public sealed class PrivateCommand : IBinarySerializable
+public sealed class PrivateCommand : ISpliceCommand
 {
     public SpliceCommandType Type => SpliceCommandType.PrivateCommand;
     public uint Identifier { get; set; }

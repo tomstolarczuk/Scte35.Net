@@ -3,7 +3,7 @@ using Scte35.Net.Model.Enums;
 
 namespace Scte35.Net.Model.SpliceCommand;
 
-public sealed class SpliceNullCommand : IBinarySerializable
+public sealed class SpliceNullCommand : ISpliceCommand
 {
     public SpliceCommandType Type => SpliceCommandType.SpliceNull;
     public int PayloadBytes => 0;

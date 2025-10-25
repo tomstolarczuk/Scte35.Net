@@ -4,7 +4,7 @@ using Scte35.Net.Model.Enums;
 
 namespace Scte35.Net.Model.SpliceCommand;
 
-public sealed class TimeSignalCommand : IBinarySerializable
+public sealed class TimeSignalCommand : ISpliceCommand
 {
     public SpliceCommandType Type => SpliceCommandType.TimeSignal;
     public bool TimeSpecifiedFlag { get; set; }
@@ -24,7 +24,7 @@ public sealed class TimeSignalCommand : IBinarySerializable
             w.WriteBits(Scte35Constants.Reserved, 6);
 
             ulong pts = (PtsTime90K ?? 0UL) & Scte35Constants.PtsMax;
-            w.WriteBits64(pts, 33);
+            w.WritePts33(pts);
         }
         else
         {
@@ -48,7 +48,7 @@ public sealed class TimeSignalCommand : IBinarySerializable
             PayloadValidator.RequireExactLength(data, 5);
 
             r.SkipBits(6);
-            PtsTime90K = r.ReadBits64(33);
+            PtsTime90K = r.ReadPts33();
         }
         else
         {

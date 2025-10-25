@@ -4,7 +4,7 @@ using Scte35.Net.Model.Enums;
 
 namespace Scte35.Net.Model.SpliceCommand
 {
-    public sealed class SpliceScheduleCommand : IBinarySerializable
+    public sealed class SpliceScheduleCommand : ISpliceCommand
     {
         public SpliceCommandType Type => SpliceCommandType.SpliceSchedule;
         public IList<Event> Events { get; } = new List<Event>();
@@ -209,14 +209,14 @@ namespace Scte35.Net.Model.SpliceCommand
             {
                 w.WriteBit(AutoReturn);
                 w.WriteBits(Scte35Constants.Reserved, 6);
-                w.WriteBits64(Duration90K & Scte35Constants.PtsMax, 33);
+                w.WritePts33(Duration90K & Scte35Constants.PtsMax);
             }
 
             internal void Decode(ref BitReader r)
             {
                 AutoReturn = r.ReadBit();
                 r.SkipBits(6);
-                Duration90K = r.ReadBits64(33);
+                Duration90K = r.ReadPts33();
             }
         }
     }
