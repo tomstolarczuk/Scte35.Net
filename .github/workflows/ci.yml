@@ -29,14 +29,6 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Ensure git is available
-        run: |
-          if ! command -v git >/dev/null 2>&1; then
-            sudo apt-get update
-            sudo apt-get install -y --no-install-recommends git ca-certificates
-          fi
-          git --version
-          
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
@@ -52,6 +44,9 @@ jobs:
 
       - run: dotnet restore
       - run: dotnet tool install --global Versionize || true
+        
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
       - name: run versionize.sh
         env:
