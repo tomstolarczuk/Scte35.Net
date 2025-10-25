@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <PackageId>Scte35.Net</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.5</Version>
     <Authors>YourName</Authors>
     <Description>.NET library for parsing and generating SCTE-35 cue messages (port of Comcast/scte35-go)</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

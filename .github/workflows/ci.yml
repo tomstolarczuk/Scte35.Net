@@ -1,0 +1,198 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [ "**" ]
+
+permissions:
+  contents: write
+  packages: write
+  
+defaults:
+  run:
+    shell: /bin/bash -euo pipefail {0}
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_NOLOGO: "true"
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.export.outputs.version }}
+      did_release: ${{ steps.export.outputs.did_release }}
+      release_tag: ${{ steps.export.outputs.release_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: cache nuget
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-8.0-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props', 'global.json', 'NuGet.config') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-8.0-
+            nuget-${{ runner.os }}-
+
+      - run: dotnet restore
+      - run: dotnet tool install --global Versionize || true
+        
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
+      - name: run versionize.sh
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
+        run: |
+          git config user.name  "${GIT_AUTHOR_NAME}"
+          git config user.email "${GIT_AUTHOR_EMAIL}"
+          git fetch --tags --prune || true
+          bash .github/versionize.sh
+          test -f version.env && cat version.env || true
+
+      - id: export
+        run: |
+          if [[ -f version.env ]]; then
+            set -a; source version.env; set +a
+            echo "version=$VERSION"         >> "$GITHUB_OUTPUT"
+            echo "did_release=$DID_RELEASE" >> "$GITHUB_OUTPUT"
+            echo "release_tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=0.0.0-ci.${{ github.run_number }}+sha.${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+            echo "did_release=false" >> "$GITHUB_OUTPUT"
+            echo "release_tag="      >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    runs-on: ubuntu-latest
+    if: needs.version.outputs.did_release == 'true'
+    needs: [ version ]
+    steps:
+      - uses: actions/checkout@v4
+        
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+          
+      - name: cache nuget
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-8.0-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props', 'global.json', 'NuGet.config') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-8.0-
+            nuget-${{ runner.os }}-
+
+      - run: dotnet restore
+      - run: dotnet build -c Release -p:ContinuousIntegrationBuild=true -p:Version="${{ needs.version.outputs.version }}" -p:InformationalVersion="${{ needs.version.outputs.version }}"
+
+      - name: upload build outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-bin
+          path: |
+            src/**/bin/Release
+            tests/**/bin/Release
+
+  test:
+    runs-on: ubuntu-latest
+    if: needs.version.outputs.did_release == 'true'
+    needs: [ build ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: download build outputs
+        uses: actions/download-artifact@v4
+        with:
+          name: build-bin
+          path: .
+
+      - run: dotnet test -c Release --no-build --logger "trx;LogFileName=test_results.trx" --collect:"XPlat Code Coverage"
+
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            **/TestResults/*.trx
+            **/TestResults/**/coverage.cobertura.xml
+
+  pack:
+    runs-on: ubuntu-latest
+    if: needs.version.outputs.did_release == 'true'
+    needs: [ version, test ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: download build outputs
+        uses: actions/download-artifact@v4
+        with:
+          name: build-bin
+          path: .
+
+      - name: cache nuget
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-8.0-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props', 'global.json', 'NuGet.config') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-8.0-
+            nuget-${{ runner.os }}-
+
+      - name: pack nupkg 
+        run: |
+          echo "Packing ${{ needs.version.outputs.version }}"
+          dotnet pack -c Release \
+            -p:ContinuousIntegrationBuild=true \
+            -p:Version="${{ needs.version.outputs.version }}" \
+            -p:PackageVersion="${{ needs.version.outputs.version }}" \
+            -o ./artifacts
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nupkgs
+          path: artifacts/*.nupkg
+
+  publish:
+    runs-on: ubuntu-latest
+    if: needs.version.outputs.did_release == 'true'
+    needs: [ version, pack ]
+    env:
+      NUGET_SOURCE: ${{ vars.NUGET_SOURCE }}
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { name: nupkgs, path: artifacts }
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: publish
+        run: |
+          set -euo pipefail
+          SRC="${NUGET_SOURCE:-https://api.nuget.org/v3/index.json}"
+          if [[ -z "${NUGET_API_KEY:-}" ]]; then
+            echo "NUGET_API_KEY not set; skipping publish."; exit 0
+          fi
+          echo "Publishing ${{ needs.version.outputs.release_tag }} -> ${SRC}"
+          dotnet nuget push "artifacts/*.nupkg" --api-key "${NUGET_API_KEY}" --source "${SRC}" --skip-duplicate
