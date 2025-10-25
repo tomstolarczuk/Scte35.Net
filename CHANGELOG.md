@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="0.1.1"></a>
+## 0.1.1 (2025-10-25)
+
+### Bug Fixes
+
+* reader tests
+
 <a name="0.1.0"></a>
 ## 0.1.0 (2025-10-25)
 
