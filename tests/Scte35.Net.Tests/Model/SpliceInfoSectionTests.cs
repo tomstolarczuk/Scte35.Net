@@ -242,5 +242,74 @@ namespace Scte35.Net.Tests.Model
             Assert.True(dec.Crc32Valid);
             Assert.Equal(dec.PayloadBytes, dec.PayloadBytes);
         }
+        
+        [Fact]
+        public void Encrypted_WithStuffing_And_ECRC32_Strict_RoundTrip()
+        {
+            var sis = new SpliceInfoSection
+            {
+                EncryptedPacket = true,
+                EncryptionAlgorithm = EncryptionAlgorithm.None,
+                PtsAdjustment90K = 5,
+                SpliceCommand = new SpliceNullCommand(),
+                AlignmentStuffing = [0xAA, 0xBB, 0x00, 0xCC],
+                ECRC32 = 0x01020304u
+            };
+
+            // encode → decode → re-encode (strict bytes match)
+            var original = Scte35.Encode(sis);
+            var dec = Scte35.Decode(original);
+
+            Assert.True(dec.Crc32Valid);
+            Assert.True(dec.EncryptedPacket);
+            Assert.Equal(EncryptionAlgorithm.None, dec.EncryptionAlgorithm);
+            Assert.Equal<ulong>(5, dec.PtsAdjustment90K);
+            Assert.Equal([0xAA, 0xBB, 0x00, 0xCC], dec.AlignmentStuffing);
+            Assert.Equal(0x01020304u, dec.ECRC32!.Value);
+            Assert.IsType<SpliceNullCommand>(dec.SpliceCommand);
+
+            var re = Scte35.Encode(dec);
+            Assert.Equal(original, re); // byte-for-byte identical
+        }
+
+        [Fact]
+        public void Encrypted_WithStuffing_If_StuffingByteFlipped_CrcIsInvalid()
+        {
+            var sis = new SpliceInfoSection
+            {
+                EncryptedPacket = true,
+                EncryptionAlgorithm = EncryptionAlgorithm.None,
+                SpliceCommand = new SpliceNullCommand(),
+                AlignmentStuffing = [0xDE, 0xAD, 0xBE, 0xEF],
+                ECRC32 = 0x0BADF00Du
+            };
+
+            var bytes = Scte35.Encode(sis);
+
+            // find stuffing sequence and flip one byte to force CRC mismatch
+            var idx = IndexOf(bytes, sis.AlignmentStuffing);
+            Assert.True(idx >= 0); // sanity: found stuffing
+            bytes[idx + 2] ^= 0xFF; // mutate one stuffing byte
+
+            var dec = new SpliceInfoSection();
+            dec.Decode(bytes); // decoder should NOT throw on CRC mismatch
+
+            Assert.False(dec.Crc32Valid);
+            Assert.True(dec.EncryptedPacket);
+        }
+
+        private static int IndexOf(byte[] haystack, byte[] needle)
+        {
+            for (int i = 0; i <= haystack.Length - needle.Length; i++)
+            {
+                bool match = true;
+                for (int j = 0; j < needle.Length; j++)
+                {
+                    if (haystack[i + j] != needle[j]) { match = false; break; }
+                }
+                if (match) return i;
+            }
+            return -1;
+        }
     }
 }
