@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="0.1.5"></a>
+## [0.1.5](https://www.github.com/tomstolarczuk/Scte35.Net/releases/tag/v0.1.5) (2025-10-25)
+
 <a name="0.1.4"></a>
 ## [0.1.4](https://www.github.com/tomstolarczuk/Scte35.Net/releases/tag/v0.1.4) (2025-10-25)
 
