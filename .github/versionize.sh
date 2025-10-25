@@ -12,7 +12,7 @@ EC=$?
 set -e
 
 if [[ $EC -eq 0 ]]; then
-  git push origin HEAD:main --follow-tags
+  git push origin HEAD:master --follow-tags
   RELEASE_TAG="$(git tag --points-at HEAD | head -n1 || true)"
   DID_RELEASE="true"
 else
