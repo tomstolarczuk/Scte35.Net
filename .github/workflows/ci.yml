@@ -176,7 +176,6 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.version.outputs.did_release == 'true'
     needs: [ version, pack ]
-    if: needs.version.outputs.did_release == 'true'
     env:
       NUGET_SOURCE: ${{ vars.NUGET_SOURCE }}
       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
