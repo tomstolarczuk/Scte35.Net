@@ -67,8 +67,9 @@ test:
 
 pack:
   stage: pack
-  needs: [test]
+  needs: [version, test]
   script:
+    - echo "Packing $VERSION"
     - dotnet pack -c Release -p:ContinuousIntegrationBuild=true -p:PackageVersion="$VERSION" -o ./artifacts
   artifacts:
     when: always
@@ -79,7 +80,7 @@ pack:
 
 publish:
   stage: publish
-  needs: [pack]
+  needs: [version, pack]
   script:
     - 'test "$DID_RELEASE" = "true" || { echo "No release this pipeline (DID_RELEASE=$DID_RELEASE). Skipping publish."; exit 0; }'
     - 'test -n "$NUGET_SOURCE" || { echo "NUGET_SOURCE not set; skipping publish."; exit 0; }'
