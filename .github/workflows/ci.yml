@@ -76,6 +76,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    if: needs.version.outputs.did_release == 'true'
     needs: [ version ]
     steps:
       - uses: actions/checkout@v4
@@ -106,6 +107,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    if: needs.version.outputs.did_release == 'true'
     needs: [ build ]
     steps:
       - uses: actions/checkout@v4
@@ -132,6 +134,7 @@ jobs:
 
   pack:
     runs-on: ubuntu-latest
+    if: needs.version.outputs.did_release == 'true'
     needs: [ version, test ]
     steps:
       - uses: actions/checkout@v4
@@ -171,6 +174,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    if: needs.version.outputs.did_release == 'true'
     needs: [ version, pack ]
     if: needs.version.outputs.did_release == 'true'
     env:
