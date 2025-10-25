@@ -124,7 +124,7 @@ public sealed class SegmentationDescriptor : ISpliceDescriptor
                 w.WriteByte(c.ComponentTag);
                 w.WriteBits(Scte35Constants.Reserved, 7);
                 ulong pts = c.PtsOffset90K & Scte35Constants.PtsMax; // 33 bits
-                w.WriteBits64(pts, 33);
+                w.WritePts33(pts);
             }
         }
 
@@ -208,7 +208,7 @@ public sealed class SegmentationDescriptor : ISpliceDescriptor
             {
                 byte tag = r.ReadByte();
                 r.SkipBits(7);
-                ulong pts = r.ReadBits64(33);
+                ulong pts = r.ReadPts33();
                 Components.Add(new SegmentationDescriptorComponent
                 {
                     ComponentTag = tag,
