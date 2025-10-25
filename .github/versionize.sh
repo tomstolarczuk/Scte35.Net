@@ -7,7 +7,7 @@ VERSION=""
 git fetch --tags --prune || true
 
 set +e
-versionize
+versionize --ignore-insignificant-commits
 EC=$?
 set -e
 
