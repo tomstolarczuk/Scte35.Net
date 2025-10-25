@@ -5,13 +5,9 @@ public ref struct BitWriter(Span<byte> buffer)
 	private readonly Span<byte> _buffer = buffer;
 	private int _bitPosition = 0;
 
-
 	public int BitsWritten => _bitPosition;
-
 	public int BitsRemaining => _buffer.Length * 8 - _bitPosition;
-
 	public int BytePosition => _bitPosition / 8;
-
 
 	public void WriteBits(uint value, int bitCount)
 	{
@@ -66,6 +62,13 @@ public ref struct BitWriter(Span<byte> buffer)
 	public void WriteUInt32(uint value) => WriteBits(value, 32);
 
 	public void WriteUInt64(ulong value) => WriteBits64(value, 64);
+	
+	public void WritePts33(ulong pts)
+	{
+		if (pts > (1UL << 33) - 1) throw new ArgumentOutOfRangeException(nameof(pts), "Must fit in 33 bits.");
+		WriteBits((uint)(pts >> 32), 1);
+		WriteBits((uint)(pts & 0xFFFF_FFFFu), 32);
+	}
 
 	public void AlignToNextByte()
 	{

@@ -5,15 +5,10 @@ public ref struct BitReader(ReadOnlySpan<byte> buffer)
 	private readonly ReadOnlySpan<byte> _buffer = buffer;
 	private int _bitPosition = 0;
 
-
 	public int BitsRemaining => _buffer.Length * 8 - _bitPosition;
-
 	public int BytesRemaining => _buffer.Length - _bitPosition / 8;
-
 	public int BitPosition => _bitPosition;
-
 	public int BytePosition => _bitPosition / 8;
-
 
 	public uint ReadBits(int bitCount)
 	{
@@ -61,10 +56,19 @@ public ref struct BitReader(ReadOnlySpan<byte> buffer)
 	public byte ReadByte() => (byte)ReadBits(8);
 
 	public ushort ReadUInt16() => (ushort)ReadBits(16);
+	
+	public uint ReadUInt24() => ReadBits(24);
 
 	public uint ReadUInt32() => ReadBits(32);
 
 	public ulong ReadUInt64() => ReadBits64(64);
+	
+	public ulong ReadPts33()
+	{
+		ulong hi1 = ReadBits(1);
+		ulong lo32 = ReadBits(32);
+		return (hi1 << 32) | lo32;
+	}
 
 	public void SkipBits(int count)
 	{
