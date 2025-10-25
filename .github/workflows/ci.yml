@@ -10,7 +10,7 @@ permissions:
   
 defaults:
   run:
-    shell: bash
+    shell: /bin/bash -euo pipefail {0}
 
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
@@ -48,7 +48,6 @@ jobs:
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
         run: |
-          set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config user.name  "${GIT_AUTHOR_NAME}"
           git config user.email "${GIT_AUTHOR_EMAIL}"

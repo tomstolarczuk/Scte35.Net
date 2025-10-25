@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
 DID_RELEASE="false"
 RELEASE_TAG=""
