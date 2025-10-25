@@ -140,6 +140,12 @@ jobs:
         with:
           dotnet-version: "8.0.x"
 
+      - name: download build outputs
+        uses: actions/download-artifact@v4
+        with:
+          name: build-bin
+          path: .
+
       - name: cache nuget
         uses: actions/cache@v4
         with:
@@ -149,8 +155,8 @@ jobs:
             nuget-${{ runner.os }}-8.0-
             nuget-${{ runner.os }}-
 
-      - run: dotnet restore
-      - run: |
+      - name: pack nupkg 
+        run: |
           echo "Packing ${{ needs.version.outputs.version }}"
           dotnet pack -c Release \
             -p:ContinuousIntegrationBuild=true \
