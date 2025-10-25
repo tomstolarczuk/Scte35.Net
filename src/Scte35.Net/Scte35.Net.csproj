@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <PackageId>Scte35.Net</PackageId>
-    <Version>0.1.3</Version>
+    <Version>0.1.4</Version>
     <Authors>YourName</Authors>
     <Description>.NET library for parsing and generating SCTE-35 cue messages (port of Comcast/scte35-go)</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
