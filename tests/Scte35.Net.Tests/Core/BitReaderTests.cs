@@ -71,7 +71,7 @@ public class BitReaderTests
 	public void AlignToNextByte_SkipsPartialBits()
 	{
 		var r = new BitReader([0b1010_1100, 0xFF]);
-		var _ = r.ReadBits(3); // consume 3 bits
+		r.ReadBits(3); // consume 3 bits
 		r.AlignToNextByte(); // should skip remaining 5 bits of first byte
 		Assert.Equal(8, r.BitsRemaining); // only second byte remains
 		Assert.Equal((byte)0xFF, r.ReadByte());
@@ -82,11 +82,12 @@ public class BitReaderTests
 	public void ReadBytesAligned_ReturnsSliceAndAdvances()
 	{
 		var r = new BitReader([0xAA, 0xBB, 0xCC, 0xDD]);
-		var _ = r.ReadBits(4); // misalign
+		r.ReadBits(4); // misalign
 		var span = r.ReadBytesAligned(2); // should align, then read 0xBB, 0xCC
 		Assert.Equal(0xBB, span[0]);
 		Assert.Equal(0xCC, span[1]);
-		Assert.Equal(8, r.BitsRemaining); // only 0xDD remains
+		Assert.Equal(8, r.BitsRemaining);
+		Assert.Equal(0xDD, r.ReadByte()); // only 0xDD remains
 	}
 
 	[Fact]
@@ -139,7 +140,7 @@ public class BitReaderTests
 	public void SliceBytes_CreatesSubReaderAndAdvancesParent()
 	{
 		var r = new BitReader([0xDE, 0xAD, 0xBE, 0xEF]);
-		var _ = r.ReadBits(8); // consume 0xDE
+		= r.ReadBits(8); // consume 0xDE
 		var sub = r.SliceBytes(2); // should give AD BE and advance parent
 		Assert.Equal((byte)0xAD, sub.ReadByte());
 		Assert.Equal((byte)0xBE, sub.ReadByte());
