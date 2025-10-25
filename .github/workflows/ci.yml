@@ -19,14 +19,19 @@ env:
 jobs:
   version:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     outputs:
       version: ${{ steps.export.outputs.version }}
       did_release: ${{ steps.export.outputs.did_release }}
       release_tag: ${{ steps.export.outputs.release_tag }}
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+          
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
 
       - name: cache nuget
         uses: actions/cache@v4
@@ -70,11 +75,14 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     needs: [ version ]
     steps:
       - uses: actions/checkout@v4
-
+        
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+          
       - name: cache nuget
         uses: actions/cache@v4
         with:
@@ -97,10 +105,13 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     needs: [ build ]
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
 
       - name: download build outputs
         uses: actions/download-artifact@v4
@@ -120,10 +131,13 @@ jobs:
 
   pack:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     needs: [ version, test ]
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
 
       - name: cache nuget
         uses: actions/cache@v4
@@ -150,7 +164,6 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy
     needs: [ version, pack ]
     if: needs.version.outputs.did_release == 'true'
     env:
@@ -159,6 +172,10 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with: { name: nupkgs, path: artifacts }
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
 
       - name: publish
         run: |
