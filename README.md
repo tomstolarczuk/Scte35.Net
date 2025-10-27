@@ -1,6 +1,11 @@
 # Scte35.Net
 
-![Scte35.Net logo](./logo.png)
+[![CI](https://github.com/tomstolarczuk/Scte35.Net/actions/workflows/ci.yml/badge.svg)](https://github.com/tomstolarczuk/Scte35.Net/actions/workflows/ci.yml)
+
+<p align="center">
+  <img alt="Scte35.Net logo" src="./logo.png" width="140" />
+  
+</p>
 
 A .NET 8 library for parsing and generating SCTE‑35 cue messages, adapted to idiomatic C# with guardrails around binary parsing and validation.
 
