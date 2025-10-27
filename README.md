@@ -3,7 +3,7 @@
 [![CI](https://github.com/tomstolarczuk/Scte35.Net/actions/workflows/ci.yml/badge.svg)](https://github.com/tomstolarczuk/Scte35.Net/actions/workflows/ci.yml)
 
 <p align="center">
-  <img alt="Scte35.Net logo" src="./logo.png" width="140" />
+  <img alt="Scte35.Net logo" src="./logo.png" width="400" />
   
 </p>
 
