@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="0.2.0"></a>
+## [0.2.0](https://www.github.com/tomstolarczuk/Scte35.Net/releases/tag/v0.2.0) (2025-10-29)
+
+### Features
+
+* scte35 entrypoint ([c7d64fc](https://www.github.com/tomstolarczuk/Scte35.Net/commit/c7d64fccdaafda8bbd4ac0b9cf94215717aee7a7))
+
+### Bug Fixes
+
+* reader tests ([c2cd8fe](https://www.github.com/tomstolarczuk/Scte35.Net/commit/c2cd8fe13e6e587dca976398b043756a5173a92d))
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://www.github.com/tomstolarczuk/Scte35.Net/releases/tag/v0.1.5) (2025-10-25)
 
