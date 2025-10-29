@@ -16,5 +16,10 @@
     <PackageProjectUrl>https://github.com/yourusername/Scte35.Net</PackageProjectUrl>
     <PackageTags>SCTE35 MPEG TS broadcast video</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
