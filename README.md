@@ -1,6 +1,6 @@
 # Scte35.Net
 
-[![CI](https://github.com/tomstolarczuk/Scte35.Net/actions/workflows/ci.yml/badge.svg)](https://github.com/tomstolarczuk/Scte35.Net/actions/workflows/ci.yml)
+[![CI](https://github.com/tomstolarczuk/Scte35.Net/actions/workflows/ci.yml/badge.svg)](https://github.com/tomstolarczuk/Scte35.Net/actions/workflows/ci.yml) [![NuGet](https://img.shields.io/nuget/v/Scte35.Net.svg)](https://www.nuget.org/packages/Scte35.Net/)
 
 <p align="center">
   <img alt="Scte35.Net logo" src="./logo.png" width="400" />
