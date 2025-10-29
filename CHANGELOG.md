@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="0.2.1"></a>
+## [0.2.1](https://www.github.com/tomstolarczuk/Scte35.Net/releases/tag/v0.2.1) (2025-10-29)
+
+### Bug Fixes
+
+* add readme to package ([1c650e1](https://www.github.com/tomstolarczuk/Scte35.Net/commit/1c650e1d369ada05f73fbc406247929e9c32bf32))
+
 <a name="0.2.0"></a>
 ## [0.2.0](https://www.github.com/tomstolarczuk/Scte35.Net/releases/tag/v0.2.0) (2025-10-29)
 
