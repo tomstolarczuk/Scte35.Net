@@ -13,7 +13,7 @@ Based in part on Comcast's [scte35-go](https://github.com/Comcast/scte35-go), wi
 
 - Source: `src/Scte35.Net`
 - Tests: `tests/Scte35.Net.Tests`
-- License: MIT
+- License: Apache 2.0
 
 ## Features
 
