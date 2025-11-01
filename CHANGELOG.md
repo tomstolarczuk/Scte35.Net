@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="0.3.0"></a>
+## [0.3.0](https://www.github.com/tomstolarczuk/Scte35.Net/releases/tag/v0.3.0) (2025-11-01)
+
+### Features
+
+* use built-in convert utils for hex and base64 ([121e04a](https://www.github.com/tomstolarczuk/Scte35.Net/commit/121e04aa8fa34978f6927e2197fae951d0d9ab14))
+
 <a name="0.2.2"></a>
 ## [0.2.2](https://www.github.com/tomstolarczuk/Scte35.Net/releases/tag/v0.2.2) (2025-10-29)
 
