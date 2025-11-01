@@ -1,4 +1,3 @@
-using Scte35.Net.Core;
 using Scte35.Net.Model;
 
 namespace Scte35.Net
@@ -37,7 +36,7 @@ namespace Scte35.Net
         // ---------------------------
         public static SpliceInfoSection FromBase64(string base64, Func<uint, bool>? privateIdRecognizer = null)
         {
-            var bytes = Bytes.FromBase64(base64);
+            var bytes = Convert.FromBase64String(base64);
             return Decode(bytes, privateIdRecognizer);
         }
 
@@ -45,8 +44,8 @@ namespace Scte35.Net
         {
             try
             {
-                var bytes = Bytes.FromBase64(base64);
-                return TryDecode(bytes, out section, privateIdRecognizer);
+                section = FromBase64(base64, privateIdRecognizer);
+                return true;
             }
             catch
             {
@@ -60,7 +59,7 @@ namespace Scte35.Net
             if (hex.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
                 hex = hex[2..];
 
-            var bytes = Bytes.FromHex(hex);
+            var bytes = Convert.FromHexString(hex);
             return Decode(bytes, privateIdRecognizer);
         }
 
@@ -68,11 +67,8 @@ namespace Scte35.Net
         {
             try
             {
-                if (hex.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-                    hex = hex[2..];
-
-                var bytes = Bytes.FromHex(hex);
-                return TryDecode(bytes, out section, privateIdRecognizer);
+                section = FromHex(hex, privateIdRecognizer);
+                return true;
             }
             catch
             {
@@ -97,9 +93,12 @@ namespace Scte35.Net
         // Encode to Base64 / Hex
         // ---------------------------
         public static string ToBase64(SpliceInfoSection section)
-            => Bytes.ToBase64(Encode(section));
+            => Convert.ToBase64String(Encode(section));
 
         public static string ToHex(SpliceInfoSection section, bool lower = true)
-            => Bytes.ToHex(Encode(section), lower);
+        {
+            var hex = Convert.ToHexString(Encode(section));
+            return lower ? hex.ToLowerInvariant() : hex;
+        }
     }
 }
