@@ -1,4 +1,3 @@
-using Scte35.Net.Core;
 using Scte35.Net.Model;
 using Scte35.Net.Model.Enums;
 
@@ -125,7 +124,7 @@ public class SpecVectorsTests
             return Convert.FromBase64String(v.Payload);
 
         var s = NormalizeHex(v.Payload);
-        return Bytes.FromHex(s);
+        return Convert.FromHexString(s);
     }
 
     private static SpliceCommandType ParseCommand(string s) => s.ToLowerInvariant() switch
